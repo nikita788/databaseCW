@@ -1,0 +1,5 @@
+com\test\testTask\TestTaskApplication.class
+com\test\testTask\controllers\MasterController.class
+com\test\testTask\controllers\ServiceController.class
+com\test\testTask\controllers\AuthorizationController.class
+com\test\testTask\controllers\CarController.class
