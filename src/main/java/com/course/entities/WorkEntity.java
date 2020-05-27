@@ -1,19 +1,21 @@
 package com.course.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+
+@NamedStoredProcedureQuery(name = WorkEntity.AvgCostForAllCars,
+        procedureName = "AVG_SERVICE_COST_FOR_ALL_CARS",
+        parameters = {
+                @StoredProcedureParameter(type = LocalDate.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(type = LocalDate.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(type = Object.class, mode = ParameterMode.REF_CURSOR)
+        })
 
 @Entity
 @Table(name = "WORKS")
 public class WorkEntity {
+
+    public static final String AvgCostForAllCars = "avgCost";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.course.models.Converter.toCarDto;
 import static com.course.models.Converter.toMaintenanceDto;
@@ -36,6 +37,14 @@ public class WorkService {
         this.masterRepository = masterRepository;
         this.maintenanceRepository = maintenanceRepository;
         this.carRepository = carRepository;
+    }
+
+    @Transactional
+    public void avgCost(String dateStart, String dateEnd) {
+        LocalDate dateStartt = LocalDate.parse(dateStart);
+        LocalDate dateEndd = LocalDate.parse(dateEnd);
+        List<Object> list = workRepository.avgCost(dateStartt, dateEndd);
+        System.out.println(list);
     }
 
     @Transactional
