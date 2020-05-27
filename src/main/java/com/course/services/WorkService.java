@@ -4,6 +4,7 @@ import com.course.entities.CarEntity;
 import com.course.entities.MaintenanceEntity;
 import com.course.entities.MasterEntity;
 import com.course.entities.WorkEntity;
+import com.course.models.AvgCostOutDto;
 import com.course.models.MasterDto;
 import com.course.models.WorkCreateDto;
 import com.course.models.WorkData;
@@ -20,6 +21,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class WorkService {
     }
 
     @Transactional
-    public void avgCost(String dateStart, String dateEnd) {
+    public AvgCostOutDto avgCost(String dateStart, String dateEnd) {
         LocalDate dateStartt = LocalDate.parse(dateStart);
         LocalDate dateEndd = LocalDate.parse(dateEnd);
 
@@ -64,9 +66,15 @@ public class WorkService {
 
         query.execute();
 
-        List<Object[]> postComments = query.getResultList();
+        List<Object[]> avgServiceCost = query.getResultList();
+        AvgCostOutDto avgCost = new AvgCostOutDto();
 
-        System.out.println("");
+        for (Object[] obj : avgServiceCost) {
+            avgCost.setCostForeign((BigDecimal) obj[0]);
+            avgCost.setCostOur((BigDecimal) obj[1]);
+        }
+
+        return avgCost;
     }
 
     @Transactional

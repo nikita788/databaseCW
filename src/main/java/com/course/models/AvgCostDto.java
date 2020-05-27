@@ -1,7 +1,5 @@
 package com.course.models;
 
-import java.time.LocalDate;
-
 public class AvgCostDto {
 
     private String dateStart;
