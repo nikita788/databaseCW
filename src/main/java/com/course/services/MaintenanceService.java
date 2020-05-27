@@ -1,6 +1,7 @@
 package com.course.services;
 
 import com.course.entities.MaintenanceEntity;
+import com.course.models.Converter;
 import com.course.models.MaintenanceDto;
 import com.course.repositories.MaintenanceRepository;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.course.models.Converter.toMaintenanceDto;
 
 @Service
 public class MaintenanceService {
@@ -20,7 +23,7 @@ public class MaintenanceService {
 
     @Transactional
     public List<MaintenanceDto> getMaintenanceList() {
-        return maintenanceRepository.findAll().stream().map(this::toMaintenanceDto).collect(Collectors.toList());
+        return maintenanceRepository.findAll().stream().map(Converter::toMaintenanceDto).collect(Collectors.toList());
     }
 
     @Transactional
@@ -49,16 +52,5 @@ public class MaintenanceService {
         entity.setCostOur(dto.getCostOur());
         entity.setCostForeign(dto.getCostForeign());
     }
-
-    MaintenanceDto toMaintenanceDto(MaintenanceEntity entity) {
-        MaintenanceDto dto = new MaintenanceDto();
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setCostOur(entity.getCostOur());
-        dto.setCostForeign(entity.getCostForeign());
-
-        return dto;
-    }
-
 
 }

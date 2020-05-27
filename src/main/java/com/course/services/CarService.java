@@ -2,6 +2,7 @@ package com.course.services;
 
 import com.course.entities.CarEntity;
 import com.course.models.CarDto;
+import com.course.models.Converter;
 import com.course.repositories.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.course.models.Converter.toCarDto;
 
 @Service
 public class CarService {
@@ -22,12 +25,12 @@ public class CarService {
 
     @Transactional
     public List<CarDto> getCars() {
-        return carRepository.findAll().stream().map(this::toCarDto).collect(Collectors.toList());
+        return carRepository.findAll().stream().map(Converter::toCarDto).collect(Collectors.toList());
     }
 
     @Transactional
     public List<CarDto> getCarsByNumber(String number) {
-        return carRepository.getByNumber(number).stream().map(this::toCarDto).collect(Collectors.toList());
+        return carRepository.getByNumber(number).stream().map(Converter::toCarDto).collect(Collectors.toList());
     }
 
     @Transactional
@@ -57,15 +60,4 @@ public class CarService {
         entity.setMark(dto.getMark());
         entity.setIsForeign(dto.isForeign() ? 1 : 0);
     }
-
-    private CarDto toCarDto(CarEntity entity) {
-        CarDto dto = new CarDto();
-        dto.setId(entity.getId());
-        dto.setNumber(entity.getNumber());
-        dto.setColor(entity.getColor());
-        dto.setMark(entity.getMark());
-        dto.setForeign(entity.getIsForeign() == 1);
-        return dto;
-    }
-
 }
