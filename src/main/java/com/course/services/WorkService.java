@@ -14,6 +14,10 @@ import com.course.repositories.WorkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.PersistenceContext;
+import javax.persistence.StoredProcedureQuery;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
@@ -30,6 +34,9 @@ public class WorkService {
     private CarRepository carRepository;
     private MaintenanceRepository maintenanceRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Autowired
     public WorkService(WorkRepository workRepository, MasterRepository masterRepository,
                        CarRepository carRepository, MaintenanceRepository maintenanceRepository) {
@@ -43,8 +50,23 @@ public class WorkService {
     public void avgCost(String dateStart, String dateEnd) {
         LocalDate dateStartt = LocalDate.parse(dateStart);
         LocalDate dateEndd = LocalDate.parse(dateEnd);
-        List<Object> list = workRepository.avgCost(dateStartt, dateEndd);
-        System.out.println(list);
+
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery("AVG_SERVICE_COST_FOR_ALL_CARS")
+                .registerStoredProcedureParameter(1, LocalDate.class,
+                        ParameterMode.IN)
+                .registerStoredProcedureParameter(2, LocalDate.class,
+                        ParameterMode.IN)
+                .registerStoredProcedureParameter(3, Class.class,
+                        ParameterMode.REF_CURSOR)
+                .setParameter(1, dateStartt)
+                .setParameter(2, dateEndd);
+
+        query.execute();
+
+        List<Object[]> postComments = query.getResultList();
+
+        System.out.println("");
     }
 
     @Transactional
