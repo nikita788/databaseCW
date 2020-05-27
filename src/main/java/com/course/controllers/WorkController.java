@@ -37,7 +37,7 @@ public class WorkController {
         return workService.getWorkData(id);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "")
     public List<WorkData> getAllWorkData() {
         return workService.getAllWorkData();
     }
