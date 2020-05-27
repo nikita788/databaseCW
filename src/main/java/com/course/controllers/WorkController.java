@@ -1,6 +1,7 @@
 package com.course.controllers;
 
 import com.course.models.AvgCostDto;
+import com.course.models.AvgCostOutDto;
 import com.course.models.WorkCreateDto;
 import com.course.models.WorkData;
 import com.course.services.WorkService;
@@ -49,7 +50,7 @@ public class WorkController {
 
     @PostMapping(value = "/avgCost", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public void avgCost(@RequestBody @Valid AvgCostDto avgCostDto) {
-        workService.avgCost(avgCostDto.getDateStart(), avgCostDto.getDateEnd());
+    public AvgCostOutDto avgCost(@RequestBody @Valid AvgCostDto avgCostDto) {
+        return workService.avgCost(avgCostDto.getDateStart(), avgCostDto.getDateEnd());
     }
 }
