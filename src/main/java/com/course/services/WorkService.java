@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.course.models.Converter.toCarDto;
 import static com.course.models.Converter.toMaintenanceDto;
@@ -72,19 +73,12 @@ public class WorkService {
     @Transactional
     public WorkData getWorkData(int id) {
         WorkEntity entity = workRepository.getOne(id);
-        WorkData workData = new WorkData();
-        workData.setWorkId(entity.getId());
-        workData.setDate(entity.getDate());
-        if (entity.getMaster() != null) {
-            workData.setMaster(new MasterDto(entity.getMaster().getId(), entity.getMaster().getName()));
-        }
-        if (entity.getCar() != null) {
-            workData.setCar(toCarDto(entity.getCar()));
-        }
-        if (entity.getService() != null) {
-            workData.setMaintenance(toMaintenanceDto(entity.getService()));
-        }
-        return workData;
+        return toWorkData(entity);
+    }
+
+    @Transactional
+    public List<WorkData> getAllWorkData() {
+        return workRepository.findAll().stream().map(this::toWorkData).collect(Collectors.toList());
     }
 
     @Transactional
@@ -100,5 +94,21 @@ public class WorkService {
         workRepository.save(entity);
 
         return getWorkData(entity.getId());
+    }
+
+    private WorkData toWorkData(WorkEntity entity) {
+        WorkData workData = new WorkData();
+        workData.setWorkId(entity.getId());
+        workData.setDate(entity.getDate());
+        if (entity.getMaster() != null) {
+            workData.setMaster(new MasterDto(entity.getMaster().getId(), entity.getMaster().getName()));
+        }
+        if (entity.getCar() != null) {
+            workData.setCar(toCarDto(entity.getCar()));
+        }
+        if (entity.getService() != null) {
+            workData.setMaintenance(toMaintenanceDto(entity.getService()));
+        }
+        return workData;
     }
 }

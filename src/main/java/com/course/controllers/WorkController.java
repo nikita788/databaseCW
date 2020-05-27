@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -33,6 +34,11 @@ public class WorkController {
     @GetMapping(value = "/{workId}")
     public WorkData getWorkDataById(@PathVariable("workId") int id) {
         return workService.getWorkData(id);
+    }
+
+    @GetMapping(value = "/all")
+    public List<WorkData> getAllWorkData() {
+        return workService.getAllWorkData();
     }
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
