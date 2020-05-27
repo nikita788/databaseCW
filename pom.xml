@@ -56,7 +56,7 @@
 			<artifactId>ojdbc</artifactId>
 			<version>7</version>
 			<scope>system</scope>
-			<systemPath>D:/Diplom/databaseCW/src/main/resources/ojdbc7.jar</systemPath>
+			<systemPath>/Users/nikitakulikov/Documents/Учеба/6 СЕМ/БД/databaseCW/src/main/resources/ojdbc7.jar</systemPath>
 		</dependency>
 
 		<dependency>

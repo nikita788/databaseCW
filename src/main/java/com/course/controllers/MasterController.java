@@ -3,12 +3,9 @@ package com.course.controllers;
 import com.course.models.MasterDto;
 import com.course.services.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +29,23 @@ public class MasterController {
     @GetMapping(value = "/{name}")
     public List<MasterDto> getMastersByName(@PathVariable(name = "name") String name) {
         return masterService.getMastersByName(name);
+    }
+
+    @PutMapping(value = "/{masterId}")
+    @ResponseStatus(HttpStatus.OK)
+    public MasterDto update(@PathVariable("masterId") int id, @RequestBody MasterDto masterDto) {
+        return masterService.updateMaster(id, masterDto);
+    }
+
+    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public MasterDto create(@RequestBody MasterDto masterDto) {
+        return masterService.createMaster(masterDto);
+    }
+
+    @DeleteMapping(value = "/{masterId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable("masterId") int id) {
+        masterService.deleteMaster(id);
     }
 }
